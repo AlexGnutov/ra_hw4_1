@@ -7,19 +7,17 @@ function ColorTransformer(props) {
     const [color, setColor] = useState('rgb(0,0,0)')
 
     const transform = value => {
-        const decimals = value
-            .match(/[A-Fa-f0-9]{2}/g)
-            .map(hexNumStr => parseInt(hexNumStr, 16));
-
-        if (decimals.some((elem) => Number.isNaN(elem))
-            || decimals.length !== 3) {
-            setState('Error!');
-            setColor('rgb(255,0,0)');
+        if (/^[A-Fa-f0-9]{6}$/.test(value.substring(1))) {
+            const decimals = value
+                .match(/[A-Fa-f0-9]{2}/g)
+                .map(hexNumStr => parseInt(hexNumStr, 16));
+            const colorString = `rgb(${decimals.join(', ')})`;
+            setState(colorString);
+            setColor(colorString);
             return;
         }
-        const colorString = `rgb(${decimals.join(', ')})`;
-        setState(colorString);
-        setColor(colorString);
+        setState('Error!');
+        setColor('rgb(255,0,0)');
     }
 
     return (
